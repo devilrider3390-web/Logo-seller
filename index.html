@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Login</title>
+    <style>
+        body { font-family: Arial; display: flex; justify-content: center; padding-top: 50px; }
+        .login-form { padding: 20px; border: 1px solid #ccc; border-radius: 5px; width: 300px; }
+        input, button { width: 100%; padding: 10px; margin: 8px 0; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+    <div class="login-form">
+        <h2>User Login</h2>
+        <!-- Form for regular users -->
+        <input type="text" id="userUsername" placeholder="Username">
+        <input type="password" id="userPassword" placeholder="Password">
+        <button onclick="userLogin()">Login</button>
+        <p id="userMessage"></p>
+
+        <hr>
+        <h3>Admin Login</h3>
+        <!-- Form for the admin -->
+        <input type="text" id="adminUsername" placeholder="Admin Username">
+        <input type="password" id="adminPassword" placeholder="Admin Password">
+        <button onclick="adminLogin()">Admin Login</button>
+        <p id="adminMessage"></p>
+    </div>
+
+    <script>
+        // This function handles regular user login
+        function userLogin() {
+            const username = document.getElementById('userUsername').value;
+            const password = document.getElementById('userPassword').value;
+
+            // Simple check (in a real app, you'd verify this on a server)
+            if (username === '' || password === '') {
+                document.getElementById('userMessage').textContent = 'Please enter both fields.';
+                return;
+            }
+
+            // "Store" the login attempt in the browser's local storage
+            let logData = JSON.parse(localStorage.getItem('loginData')) || [];
+            logData.push({ username: username, password: password, time: new Date().toLocaleString() });
+            localStorage.setItem('loginData', JSON.stringify(logData));
+
+            // Show a message to the user
+            document.getElementById('userMessage').textContent = 'Login successful (simulated)! Data stored locally.';
+            
+            // Clear the form
+            document.getElementById('userUsername').value = '';
+            document.getElementById('userPassword').value = '';
+        }
+
+        // This function handles the admin login
+        function adminLogin() {
+            const adminUser = document.getElementById('adminUsername').value;
+            const adminPass = document.getElementById('adminPassword').value;
+
+            // Hardcoded admin credentials (for local practice only!)
+            const ADMIN_CREDENTIALS = { username: "admin", password: "admin123" };
+
+            if (adminUser === ADMIN_CREDENTIALS.username && adminPass === ADMIN_CREDENTIALS.password) {
+                // If correct, redirect to the admin panel page
+                window.location.href = 'admin.html';
+            } else {
+                document.getElementById('adminMessage').textContent = 'Invalid admin credentials. Try: admin / admin123';
+            }
+        }
+    </script>
+</body>
+</html>
