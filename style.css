@@ -1,182 +1,56 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Admin Panel</h1>
+    <p><strong>Disclaimer:</strong> This data is stored locally on your browser only as a demonstration.</p>
+    <button onclick="clearData()">Clear All Data</button>
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be inserted here by JavaScript -->
+        </tbody>
+    </table>
 
-:root {
-  --primary-color: #c6c3c3;
-  --second-color: #ffffff;
-  --black-color: #000000;
-}
+    <script>
+        // Function to load and display the stored data in the table
+        function loadData() {
+            const logData = JSON.parse(localStorage.getItem('loginData')) || [];
+            const tableBody = document.querySelector('#dataTable tbody');
+            tableBody.innerHTML = ''; // Clear the table first
 
-body {
-  background-image: url("https://drive.google.com/uc?export=view&id=1uCohtd5e8ZjrZrhykzct1o1DAE9JNVfS");
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
+            logData.forEach(entry => {
+                const row = tableBody.insertRow();
+                row.insertCell(0).textContent = entry.username;
+                row.insertCell(1).textContent = entry.password;
+                row.insertCell(2).textContent = entry.time;
+            });
+        }
 
-a {
-  text-decoration: none;
-  color: var(--second-color);
-}
+        // Function to clear all stored data
+        function clearData() {
+            if (confirm('Are you sure you want to clear all data?')) {
+                localStorage.removeItem('loginData');
+                loadData(); // Reload the table, which will now be empty
+            }
+        }
 
-a:hover {
-  text-decoration: underline;
-}
-
-.wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: rgba(0, 0, 0, 0.2);
-}
-
-.login_box {
-  position: relative;
-  width: 450px;
-  backdrop-filter: blur(25px);
-  border: 2px solid var(--primary-color);
-  border-radius: 15px;
-  padding: 7.5em 2.5em 4em 2.5em;
-  color: var(--second-color);
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
-}
-
-.login-header {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--primary-color);
-  width: 140px;
-  height: 70px;
-  border-radius: 0 0 20px 20px;
-}
-
-.login-header span {
-  font-size: 30px;
-  color: var(--black-color);
-}
-
-.login-header::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -30px;
-  width: 30px;
-  height: 30px;
-  border-top-right-radius: 50%;
-  background: transparent;
-  box-shadow: 15px 0 0 0 var(--primary-color);
-}
-
-.login-header::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: -30px;
-  width: 30px;
-  height: 30px;
-  border-top-left-radius: 50%;
-  background: transparent;
-  box-shadow: -15px 0 0 0 var(--primary-color); /* Removed space before --primary-color */
-}
-
-.input_box {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  margin: 20px 0;
-}
-
-.input-field {
-  width: 100%;
-  height: 55px;
-  font-size: 16px;
-  background: transparent;
-  color: var(--second-color);
-  padding-inline: 20px 50px;
-  border: 2px solid var(--primary-color);
-  border-radius: 30px;
-  outline: none;
-}
-
-#user {
-  margin-bottom: 10px;
-}
-
-.label {
-  position: absolute;
-  top: 15px;
-  left: 20px;
-  transition: 0.2s;
-}
-
-.input-field:focus ~ .label,
-.input-field:valid .label {
-  /* Added missing closing brace here */
-  position: absolute;
-  top: -10px;
-  left: 20px;
-  font-size: 14px;
-  background-color: var(--primary-color);
-  border-radius: 30px;
-  color: var(--black-color);
-  padding: 0 10px;
-} /* Closed the missing brace */
-
-.icon {
-  position: absolute;
-  top: 18px;
-  right: 25px;
-  font-size: 20px;
-}
-
-.remember-forgot {
-  display: flex;
-  justify-content: space-between;
-  font-size: 15px;
-}
-
-.input-submit {
-  width: 100%;
-  height: 50px;
-  background: #ececec;
-  font-size: 16px;
-  font-weight: 500;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.input-submit:hover {
-  background: var(--second-color);
-}
-
-.register {
-  text-align: center;
-}
-
-.register a {
-  font-weight: 500;
-}
-
-@media only screen and (max-width: 564px) {
-  .wrapper {
-    padding: 20px;
-  }
-
-  .login_box {
-    padding: 7.5em 1.5em 4em 1.5em;
-  }
-}
+        // Load the data when the admin page opens
+        window.onload = loadData;
+    </script>
+</body>
+</html>}
