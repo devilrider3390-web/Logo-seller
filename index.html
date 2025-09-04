@@ -1,71 +1,267 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>User Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook - Log In or Sign Up</title>
     <style>
-        body { font-family: Arial; display: flex; justify-content: center; padding-top: 50px; }
-        .login-form { padding: 20px; border: 1px solid #ccc; border-radius: 5px; width: 300px; }
-        input, button { width: 100%; padding: 10px; margin: 8px 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 980px;
+            padding: 20px;
+        }
+        
+        .left-section {
+            flex: 0 1 500px;
+            padding-right: 32px;
+        }
+        
+        .logo {
+            width: 300px;
+            margin-bottom: -10px;
+        }
+        
+        h2 {
+            font-size: 28px;
+            font-weight: normal;
+            line-height: 32px;
+            color: #1c1e21;
+        }
+        
+        .card {
+            flex: 0 1 400px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+        }
+        
+        .card form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        input {
+            padding: 14px 16px;
+            font-size: 17px;
+            border-radius: 6px;
+            border: 1px solid #dddfe2;
+            color: #1d2129;
+        }
+        
+        input:focus {
+            border-color: #1877f2;
+            box-shadow: 0 0 0 2px #e7f3ff;
+            outline: none;
+        }
+        
+        .login-btn {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 20px;
+            padding: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        
+        .login-btn:hover {
+            background-color: #166fe5;
+        }
+        
+        .forgot-pass {
+            color: #1877f2;
+            text-align: center;
+            font-size: 14px;
+            text-decoration: none;
+            margin: 5px 0 15px;
+            display: block;
+        }
+        
+        .forgot-pass:hover {
+            text-decoration: underline;
+        }
+        
+        .divider {
+            border-bottom: 1px solid #dadde1;
+            margin: 20px -20px;
+        }
+        
+        .create-btn {
+            background-color: #42b72a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 17px;
+            padding: 12px 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 60%;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .create-btn:hover {
+            background-color: #36a420;
+        }
+        
+        .admin-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1877f2;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+            user-select: none;
+        }
+        
+        .admin-panel {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .admin-panel h3 {
+            margin-bottom: 15px;
+            color: #1c1e21;
+            text-align: center;
+        }
+        
+        .admin-panel input {
+            margin-bottom: 10px;
+        }
+        
+        .admin-panel button {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .hidden-admin {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .page-create {
+            text-align: center;
+            margin-top: 28px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
-    <div class="login-form">
-        <h2>User Login</h2>
-        <!-- Form for regular users -->
-        <input type="text" id="userUsername" placeholder="Username">
-        <input type="password" id="userPassword" placeholder="Password">
-        <button onclick="userLogin()">Login</button>
-        <p id="userMessage"></p>
-
-        <hr>
+    <div class="container">
+        <div class="left-section">
+            <img src="https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg" alt="Facebook" class="logo">
+            <h2>Facebook helps you connect and share with the people in your life.</h2>
+        </div>
+        
+        <div class="card">
+            <form id="loginForm">
+                <input type="text" placeholder="Email address or phone number">
+                <input type="password" placeholder="Password">
+                <button type="button" class="login-btn" onclick="simulateLogin()">Log In</button>
+                <a href="#" class="forgot-pass">Forgotten password?</a>
+                <div class="divider"></div>
+                <button type="button" class="create-btn">Create New Account</button>
+            </form>
+            
+            <!-- Hidden admin login area - invisible to regular users -->
+            <div class="hidden-admin" title="Admin Access" onclick="toggleAdminPanel()"></div>
+        </div>
+    </div>
+    
+    <!-- Admin login panel (initially hidden) -->
+    <div class="admin-toggle" onclick="toggleAdminPanel()">A</div>
+    
+    <div class="admin-panel" id="adminPanel">
         <h3>Admin Login</h3>
-        <!-- Form for the admin -->
         <input type="text" id="adminUsername" placeholder="Admin Username">
         <input type="password" id="adminPassword" placeholder="Admin Password">
-        <button onclick="adminLogin()">Admin Login</button>
-        <p id="adminMessage"></p>
+        <button onclick="adminLogin()">Login as Admin</button>
     </div>
-
+    
     <script>
-        // This function handles regular user login
-        function userLogin() {
-            const username = document.getElementById('userUsername').value;
-            const password = document.getElementById('userPassword').value;
-
-            // Simple check (in a real app, you'd verify this on a server)
-            if (username === '' || password === '') {
-                document.getElementById('userMessage').textContent = 'Please enter both fields.';
-                return;
-            }
-
-            // "Store" the login attempt in the browser's local storage
-            let logData = JSON.parse(localStorage.getItem('loginData')) || [];
-            logData.push({ username: username, password: password, time: new Date().toLocaleString() });
-            localStorage.setItem('loginData', JSON.stringify(logData));
-
-            // Show a message to the user
-            document.getElementById('userMessage').textContent = 'Login successful (simulated)! Data stored locally.';
-            
-            // Clear the form
-            document.getElementById('userUsername').value = '';
-            document.getElementById('userPassword').value = '';
+        // Function to simulate user login
+        function simulateLogin() {
+            alert('Login functionality is simulated for demonstration. In a real application, this would connect to a server.');
         }
-
-        // This function handles the admin login
+        
+        // Toggle admin panel visibility
+        function toggleAdminPanel() {
+            const panel = document.getElementById('adminPanel');
+            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        // Admin login function
         function adminLogin() {
-            const adminUser = document.getElementById('adminUsername').value;
-            const adminPass = document.getElementById('adminPassword').value;
-
-            // Hardcoded admin credentials (for local practice only!)
-            const ADMIN_CREDENTIALS = { username: "admin", password: "admin123" };
-
-            if (adminUser === ADMIN_CREDENTIALS.username && adminPass === ADMIN_CREDENTIALS.password) {
-                // If correct, redirect to the admin panel page
-                window.location.href = 'admin.html';
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            if (username === 'admin' && password === 'admin123') {
+                alert('Admin login successful! Redirecting to admin dashboard...');
+                // In a real application, this would redirect to the admin panel
             } else {
-                document.getElementById('adminMessage').textContent = 'Invalid admin credentials. Try: admin / admin123';
+                alert('Invalid admin credentials. Try admin/admin123');
             }
         }
+        
+        // Close admin panel when clicking outside
+        document.addEventListener('click', function(event) {
+            const adminPanel = document.getElementById('adminPanel');
+            const adminToggle = document.querySelector('.admin-toggle');
+            
+            if (adminPanel.style.display === 'block' && 
+                !adminPanel.contains(event.target) && 
+                !adminToggle.contains(event.target)) {
+                adminPanel.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
