@@ -3,265 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facebook - Log In or Sign Up</title>
+    <title>Student Registration Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Helvetica, Arial, sans-serif;
-        }
-        
         body {
-            background-color: #f0f2f5;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 980px;
+        .section {
             padding: 20px;
-        }
-        
-        .left-section {
-            flex: 0 1 500px;
-            padding-right: 32px;
-        }
-        
-        .logo {
-            width: 300px;
-            margin-bottom: -10px;
-        }
-        
-        h2 {
-            font-size: 28px;
-            font-weight: normal;
-            line-height: 32px;
-            color: #1c1e21;
-        }
-        
-        .card {
-            flex: 0 1 400px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            max-width: 400px;
         }
-        
-        .card form {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .student-section {
+            border-top: 5px solid #0d6efd;
         }
-        
-        input {
-            padding: 14px 16px;
-            font-size: 17px;
-            border-radius: 6px;
-            border: 1px solid #dddfe2;
-            color: #1d2129;
+        .admin-section {
+            border-top: 5px solid #dc3545;
         }
-        
-        input:focus {
-            border-color: #1877f2;
-            box-shadow: 0 0 0 2px #e7f3ff;
-            outline: none;
+        .form-label {
+            font-weight: 500;
         }
-        
-        .login-btn {
-            background-color: #1877f2;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 20px;
-            padding: 12px;
+        .status-pending {
+            color: #ffc107;
             font-weight: bold;
-            cursor: pointer;
-            margin-bottom: 10px;
         }
-        
-        .login-btn:hover {
-            background-color: #166fe5;
-        }
-        
-        .forgot-pass {
-            color: #1877f2;
-            text-align: center;
-            font-size: 14px;
-            text-decoration: none;
-            margin: 5px 0 15px;
-            display: block;
-        }
-        
-        .forgot-pass:hover {
-            text-decoration: underline;
-        }
-        
-        .divider {
-            border-bottom: 1px solid #dadde1;
-            margin: 20px -20px;
-        }
-        
-        .create-btn {
-            background-color: #42b72a;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 17px;
-            padding: 12px 16px;
+        .status-approved {
+            color: #198754;
             font-weight: bold;
-            cursor: pointer;
-            width: 60%;
-            margin: 0 auto;
-            display: block;
         }
-        
-        .create-btn:hover {
-            background-color: #36a420;
-        }
-        
-        .admin-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #1877f2;
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        .status-rejected {
+            color: #dc3545;
             font-weight: bold;
-            user-select: none;
         }
-        
-        .admin-panel {
-            display: none;
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            width: 300px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-        
-        .admin-panel h3 {
-            margin-bottom: 15px;
-            color: #1c1e21;
-            text-align: center;
-        }
-        
-        .admin-panel input {
-            margin-bottom: 10px;
-        }
-        
-        .admin-panel button {
-            background-color: #1877f2;
+        .header {
+            background: linear-gradient(135deg, #0d6efd 0%, #6f42c1 100%);
             color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            border-radius: 0 0 10px 10px;
         }
-        
-        .hidden-admin {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-        
-        .page-create {
-            text-align: center;
-            margin-top: 28px;
-            font-size: 14px;
+        .table-responsive {
+            max-height: 400px;
+            overflow-y: auto;
         }
     </style>
 </head>
 <body>
+    <div class="header text-center">
+        <h1>Student Registration Portal</h1>
+        <p class="lead">Register as a new student or manage registrations as admin</p>
+    </div>
+
     <div class="container">
-        <div class="left-section">
-            <img src="https://static.xx.fbcdn.net/rsrc.php/y8/r/dF5SId3UHWd.svg" alt="Facebook" class="logo">
-            <h2>Facebook helps you connect and share with the people in your life.</h2>
-        </div>
-        
-        <div class="card">
-            <form id="loginForm">
-                <input type="text" placeholder="Email address or phone number">
-                <input type="password" placeholder="Password">
-                <button type="button" class="login-btn" onclick="simulateLogin()">Log In</button>
-                <a href="#" class="forgot-pass">Forgotten password?</a>
-                <div class="divider"></div>
-                <button type="button" class="create-btn">Create New Account</button>
+        <!-- Student Registration Section -->
+        <div class="section student-section">
+            <h2 class="mb-4">Student Registration Form</h2>
+            <form id="studentForm">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="rollNumber" class="form-label">Roll Number *</label>
+                        <input type="text" class="form-control" id="rollNumber" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="idCard" class="form-label">ID Card Number *</label>
+                        <input type="text" class="form-control" id="idCard" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="studentName" class="form-label">Full Name *</label>
+                    <input type="text" class="form-control" id="studentName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address *</label>
+                    <input type="email" class="form-control" id="email" required>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="course" class="form-label">Course *</label>
+                        <select class="form-select" id="course" required>
+                            <option value="">Select Course</option>
+                            <option value="B.Tech">B.Tech</option>
+                            <option value="MBA">MBA</option>
+                            <option value="B.Sc">B.Sc</option>
+                            <option value="M.Tech">M.Tech</option>
+                            <option value="BCA">BCA</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Registration</button>
             </form>
             
-            <!-- Hidden admin login area - invisible to regular users -->
-            <div class="hidden-admin" title="Admin Access" onclick="toggleAdminPanel()"></div>
+            <div id="formMessage" class="alert mt-3" style="display: none;"></div>
+        </div>
+
+        <!-- Admin Section -->
+        <div class="section admin-section">
+            <h2 class="mb-4">Admin Dashboard</h2>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="adminSearch" class="form-label">Search Students</label>
+                    <input type="text" class="form-control" id="adminSearch" placeholder="Search by name, roll number, or ID">
+                </div>
+                <div class="col-md-6">
+                    <label for="statusFilter" class="form-label">Filter by Status</label>
+                    <select class="form-select" id="statusFilter">
+                        <option value="all">All Statuses</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark sticky-top">
+                        <tr>
+                            <th>Roll Number</th>
+                            <th>Name</th>
+                            <th>ID Card Number</th>
+                            <th>Course</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTable">
+                        <!-- Student data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-    
-    <!-- Admin login panel (initially hidden) -->
-    <div class="admin-toggle" onclick="toggleAdminPanel()">A</div>
-    
-    <div class="admin-panel" id="adminPanel">
-        <h3>Admin Login</h3>
-        <input type="text" id="adminUsername" placeholder="Admin Username">
-        <input type="password" id="adminPassword" placeholder="Admin Password">
-        <button onclick="adminLogin()">Login as Admin</button>
-    </div>
-    
+
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p>© 2023 Student Registration Portal. All rights reserved.</p>
+    </footer>
+
     <script>
-        // Function to simulate user login
-        function simulateLogin() {
-            alert('Login functionality is simulated for demonstration. In a real application, this would connect to a server.');
+        // Store students data in local storage
+        let students = JSON.parse(localStorage.getItem('students')) || [];
+
+        // Initialize with sample data if empty
+        if (students.length === 0) {
+            students = [
+                { rollNumber: '1001', name: 'Rahul Sharma', idCard: 'ID2023001', email: 'rahul@example.com', course: 'B.Tech', phone: '9876543210', status: 'Approved' },
+                { rollNumber: '1002', name: 'Priya Patel', idCard: 'ID2023002', email: 'priya@example.com', course: 'MBA', phone: '8765432109', status: 'Pending' },
+                { rollNumber: '1003', name: 'Amit Kumar', idCard: 'ID2023003', email: 'amit@example.com', course: 'B.Sc', phone: '7654321098', status: 'Rejected' }
+            ];
+            localStorage.setItem('students', JSON.stringify(students));
         }
-        
-        // Toggle admin panel visibility
-        function toggleAdminPanel() {
-            const panel = document.getElementById('adminPanel');
-            panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
-        }
-        
-        // Admin login function
-        function adminLogin() {
-            const username = document.getElementById('adminUsername').value;
-            const password = document.getElementById('adminPassword').value;
+
+        // Student form submission
+        document.getElementById('studentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            if (username === 'admin' && password === 'admin123') {
-                alert('Admin login successful! Redirecting to admin dashboard...');
-                // In a real application, this would redirect to the admin panel
-            } else {
-                alert('Invalid admin credentials. Try admin/admin123');
-            }
-        }
-        
-        // Close admin panel when clicking outside
-        document.addEventListener('click', function(event) {
-            const adminPanel = document.getElementById('adminPanel');
-            const adminToggle = document.querySelector('.admin-toggle');
+            const rollNumber = document.getElementById('rollNumber').value;
+            const idCard = document.getElementById('idCard').value;
+            const name = document.getElementById('studentName').value;
+            const email = document.getElementById('email').value;
+            const course = document.getElementById('course').value;
+            const phone = document.getElementById('phone').value;
             
-            if (adminPanel.style.display === 'block' && 
-                !adminPanel.contains(event.target) && 
-                !adminToggle.contains(event.target)) {
-                adminPanel.style.display = 'none';
+            // Check if roll number or ID card already exists
+            const existingStudent = students.find(s => s.rollNumber === rollNumber || s.idCard === idCard);
+            
+            if (existingStudent) {
+                showMessage('A student with this Roll Number or ID Card already exists!', 'danger');
+                return;
             }
+            
+            // Add new student with pending status
+            students.push({
+                rollNumber,
+                name,
+                idCard,
+                email,
+                course,
+                phone,
+                status: 'Pending'
+            });
+            
+            // Save to local storage
+            localStorage.setItem('students', JSON.stringify(students));
+            
+            // Reset form
+            document.getElementById('studentForm').reset();
+            
+            // Show success message
+            showMessage('Registration submitted successfully! Admin will review your application.', 'success');
+            
+            // Refresh admin table
+            renderStudentsTable();
         });
+
+        // Show message function
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('formMessage');
+            messageDiv.textContent = message;
+            messageDiv.className = `alert alert-${type} mt-3`;
+            messageDiv.style.display = 'block';
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Render students table
+        function renderStudentsTable() {
+            const tableBody = document.getElementById('studentsTable');
+            const searchTerm = document.getElementById('adminSearch').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            // Filter students based on search and filter
+            const filteredStudents = students.filter(student => {
+                const matchesSearch = 
+                    student.rollNumber.toLowerCase().includes(searchTerm) ||
+                    student.name.toLowerCase().includes(searchTerm) ||
+                    student.idCard.toLowerCase().includes(searchTerm);
+                
+                const matchesStatus = statusFilter === 'all' || student.status === statusFilter;
+                
+                return matchesSearch && matchesStatus;
+            });
+            
+            // Clear table
+            tableBody.innerHTML = '';
+            
+            // Add rows to table
+            filteredStudents.forEach(student => {
+                const row = document.createElement('tr');
+                
+                // Set status class
+                let statusClass = '';
+                if (student.status === 'Pending') statusClass = 'status-pending';
+                else if (student.status === 'Approved') statusClass = 'status-approved';
+                else if (student.status === 'Rejected') statusClass = 'status-rejected';
+                
+                row.innerHTML = `
+                    <td>${student.rollNumber}</td>
+                    <td>${student.name}</td>
+                    <td>${student.idCard}</td>
+                    <td>${student.course}</td>
+                    <td class="${statusClass}">${student.status}</td>
+                    <td>
+                        ${student.status === 'Pending' ? 
+                            `<button class="btn btn-sm btn-success me-1" onclick="updateStatus('${student.rollNumber}', 'Approved')">Approve</button>
+                             <button class="btn btn-sm btn-danger" onclick="updateStatus('${student.rollNumber}', 'Rejected')">Reject</button>` :
+                            `<button class="btn btn-sm btn-outline-secondary" onclick="updateStatus('${student.rollNumber}', 'Pending')">Reset</button>`
+                        }
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Update student status
+        function updateStatus(rollNumber, status) {
+            const student = students.find(s => s.rollNumber === rollNumber);
+            if (student) {
+                student.status = status;
+                localStorage.setItem('students', JSON.stringify(students));
+                renderStudentsTable();
+            }
+        }
+
+        // Search and filter functionality
+        document.getElementById('adminSearch').addEventListener('input', renderStudentsTable);
+        document.getElementById('statusFilter').addEventListener('change', renderStudentsTable);
+
+        // Initial render
+        renderStudentsTable();
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
+                    </html>
