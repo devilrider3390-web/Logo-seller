@@ -1,40 +1,292 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Admin Panel</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { font-family: Arial; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .section {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+        .student-section {
+            border-top: 5px solid #0d6efd;
+        }
+        .admin-section {
+            border-top: 5px solid #dc3545;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+        .status-pending {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        .status-approved {
+            color: #198754;
+            font-weight: bold;
+        }
+        .status-rejected {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        .header {
+            background: linear-gradient(135deg, #0d6efd 0%, #6f42c1 100%);
+            color: white;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            border-radius: 0 0 10px 10px;
+        }
+        .table-responsive {
+            max-height: 400px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
-    <h1>Admin Panel</h1>
-    <p><strong>Disclaimer:</strong> This data is stored locally on your browser only as a demonstration.</p>
-    <button onclick="clearData()">Clear All Data</button>
-    <table id="dataTable">
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Password</th>
-                <th>Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Data will be inserted here by JavaScript -->
-        </tbody>
-    </table>
+    <div class="header text-center">
+        <h1>Student Registration Portal</h1>
+        <p class="lead">Register as a new student or manage registrations as admin</p>
+    </div>
+
+    <div class="container">
+        <!-- Student Registration Section -->
+        <div class="section student-section">
+            <h2 class="mb-4">Student Registration Form</h2>
+            <form id="studentForm">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="rollNumber" class="form-label">Roll Number *</label>
+                        <input type="text" class="form-control" id="rollNumber" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="idCard" class="form-label">ID Card Number *</label>
+                        <input type="text" class="form-control" id="idCard" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="studentName" class="form-label">Full Name *</label>
+                    <input type="text" class="form-control" id="studentName" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email Address *</label>
+                    <input type="email" class="form-control" id="email" required>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="course" class="form-label">Course *</label>
+                        <select class="form-select" id="course" required>
+                            <option value="">Select Course</option>
+                            <option value="B.Tech">B.Tech</option>
+                            <option value="MBA">MBA</option>
+                            <option value="B.Sc">B.Sc</option>
+                            <option value="M.Tech">M.Tech</option>
+                            <option value="BCA">BCA</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Registration</button>
+            </form>
+            
+            <div id="formMessage" class="alert mt-3" style="display: none;"></div>
+        </div>
+
+        <!-- Admin Section -->
+        <div class="section admin-section">
+            <h2 class="mb-4">Admin Dashboard</h2>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="adminSearch" class="form-label">Search Students</label>
+                    <input type="text" class="form-control" id="adminSearch" placeholder="Search by name, roll number, or ID">
+                </div>
+                <div class="col-md-6">
+                    <label for="statusFilter" class="form-label">Filter by Status</label>
+                    <select class="form-select" id="statusFilter">
+                        <option value="all">All Statuses</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark sticky-top">
+                        <tr>
+                            <th>Roll Number</th>
+                            <th>Name</th>
+                            <th>ID Card Number</th>
+                            <th>Course</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTable">
+                        <!-- Student data will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p>© 2023 Student Registration Portal. All rights reserved.</p>
+    </footer>
 
     <script>
-        // Function to load and display the stored data in the table
-        function loadData() {
-            const logData = JSON.parse(localStorage.getItem('loginData')) || [];
-            const tableBody = document.querySelector('#dataTable tbody');
-            tableBody.innerHTML = ''; // Clear the table first
+        // Store students data in local storage
+        let students = JSON.parse(localStorage.getItem('students')) || [];
 
-            logData.forEach(entry => {
-                const row = tableBody.insertRow();
+        // Initialize with sample data if empty
+        if (students.length === 0) {
+            students = [
+                { rollNumber: '1001', name: 'Rahul Sharma', idCard: 'ID2023001', email: 'rahul@example.com', course: 'B.Tech', phone: '9876543210', status: 'Approved' },
+                { rollNumber: '1002', name: 'Priya Patel', idCard: 'ID2023002', email: 'priya@example.com', course: 'MBA', phone: '8765432109', status: 'Pending' },
+                { rollNumber: '1003', name: 'Amit Kumar', idCard: 'ID2023003', email: 'amit@example.com', course: 'B.Sc', phone: '7654321098', status: 'Rejected' }
+            ];
+            localStorage.setItem('students', JSON.stringify(students));
+        }
+
+        // Student form submission
+        document.getElementById('studentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const rollNumber = document.getElementById('rollNumber').value;
+            const idCard = document.getElementById('idCard').value;
+            const name = document.getElementById('studentName').value;
+            const email = document.getElementById('email').value;
+            const course = document.getElementById('course').value;
+            const phone = document.getElementById('phone').value;
+            
+            // Check if roll number or ID card already exists
+            const existingStudent = students.find(s => s.rollNumber === rollNumber || s.idCard === idCard);
+            
+            if (existingStudent) {
+                showMessage('A student with this Roll Number or ID Card already exists!', 'danger');
+                return;
+            }
+            
+            // Add new student with pending status
+            students.push({
+                rollNumber,
+                name,
+                idCard,
+                email,
+                course,
+                phone,
+                status: 'Pending'
+            });
+            
+            // Save to local storage
+            localStorage.setItem('students', JSON.stringify(students));
+            
+            // Reset form
+            document.getElementById('studentForm').reset();
+            
+            // Show success message
+            showMessage('Registration submitted successfully! Admin will review your application.', 'success');
+            
+            // Refresh admin table
+            renderStudentsTable();
+        });
+
+        // Show message function
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('formMessage');
+            messageDiv.textContent = message;
+            messageDiv.className = `alert alert-${type} mt-3`;
+            messageDiv.style.display = 'block';
+            
+            // Hide message after 5 seconds
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Render students table
+        function renderStudentsTable() {
+            const tableBody = document.getElementById('studentsTable');
+            const searchTerm = document.getElementById('adminSearch').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            // Filter students based on search and filter
+            const filteredStudents = students.filter(student => {
+                const matchesSearch = 
+                    student.rollNumber.toLowerCase().includes(searchTerm) ||
+                    student.name.toLowerCase().includes(searchTerm) ||
+                    student.idCard.toLowerCase().includes(searchTerm);
+                
+                const matchesStatus = statusFilter === 'all' || student.status === statusFilter;
+                
+                return matchesSearch && matchesStatus;
+            });
+            
+            // Clear table
+            tableBody.innerHTML = '';
+            
+            // Add rows to table
+            filteredStudents.forEach(student => {
+                const row = document.createElement('tr');
+                
+                // Set status class
+                let statusClass = '';
+                if (student.status === 'Pending') statusClass = 'status-pending';
+                else if (student.status === 'Approved') statusClass = 'status-approved';
+                else if (student.status === 'Rejected') statusClass = 'status-rejected';
+                
+                row.innerHTML = `
+                    <td>${student.rollNumber}</td>
+                    <td>${student.name}</td>
+                    <td>${student.idCard}</td>
+                    <td>${student.course}</td>
+                    <td class="${statusClass}">${student.status}</td>
+                    <td>
+                        ${student.status === 'Pending' ? 
+                            `<button class="btn btn-sm btn-success me-1" onclick="updateStatus('${student.rollNumber}', 'Approved')">Approve</button>
+                             <button class="btn btn-sm btn-danger" onclick="updateStatus('${student.rollNumber}', 'Rejected')">Reject</button>` :
+                            `<button class="btn btn-sm btn-outline-secondary" onclick="updateStatus('${student.rollNumber}', 'Pending')">Reset</button>`
+                        }
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Update student status
+        function updateStatus(rollNumber, status) {
+            const student = students.find(s => s.rollNumber === rollNumber);
+            if (student) {
+                student.status = status;
+                localStorage.setItem('students', JSON.stringify(students));
+                renderStudentsTable();
+            }
+        }
+
+        // Search and filter functionality
+        document.getElementById('adminSearch').addEventListener('input', renderStudentsTable);
+        document.getElementById('statusFilter').addEventListener('change', renderStudentsTable);
+
+        // Initial render
+        renderStudentsTable();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+    </html>                const row = tableBody.insertRow();
                 row.insertCell(0).textContent = entry.username;
                 row.insertCell(1).textContent = entry.password;
                 row.insertCell(2).textContent = entry.time;
